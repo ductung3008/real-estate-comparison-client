@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import LoadingScreen from '@/components/LoadingScreen';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,13 +12,12 @@ import { useStatistic } from '@/hooks/useStatistic';
 import { rounded } from '@/lib/utils';
 import useProjectStore from '@/stores/project.store';
 import { Project } from '@/types/project.type';
-import { Building } from 'lucide-react';
+import { BadgeDollarSign, Building, CircleDollarSign, MapPin } from 'lucide-react';
 import ErrorPage from '../ErrorPage';
 
 const Dashboard = () => {
   const { data, loading, error } = useStatistic();
   const { projects, loading: loading2, fetchProjects } = useProjectStore();
-  const navigate = useNavigate();
 
   const pieChartConfig = {
     count: {
@@ -87,7 +85,7 @@ const Dashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="rounded-full bg-blue-100 p-2">
-                  <Building className="h-6 w-6 text-blue-600" />
+                  <MapPin className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Số lượng quận tiêu biểu</p>
@@ -101,7 +99,7 @@ const Dashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="rounded-full bg-blue-100 p-2">
-                  <Building className="h-6 w-6 text-blue-600" />
+                  <BadgeDollarSign className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Giá trung bình (tỷ VNĐ)</p>
@@ -115,7 +113,7 @@ const Dashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="rounded-full bg-blue-100 p-2">
-                  <Building className="h-6 w-6 text-blue-600" />
+                  <CircleDollarSign className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Giá trung bình/m2 (triệu VNĐ)</p>
