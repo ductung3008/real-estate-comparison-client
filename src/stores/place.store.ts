@@ -63,7 +63,7 @@ const usePlaceStore = create<PlaceState>((set) => ({
         placeData,
       );
       set((state) => ({
-        places: state.places.map((p) => (p.id === projectId ? response.data : p)),
+        places: state.places.map((p) => (p.id === id ? response.data : p)),
         loading: false,
         error: null,
       }));
