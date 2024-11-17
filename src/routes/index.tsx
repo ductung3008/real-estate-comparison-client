@@ -8,6 +8,7 @@ import Login from '@/pages/Login';
 import Places from '@/pages/Places';
 import Projects from '@/pages/Projects';
 import Users from '@/pages/Users';
+import ErrorPage from '@/pages/ErrorPage';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem('token');
@@ -23,7 +24,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Homepage />, // Public home page
+        element: <Homepage />,
+      },
+      {
+        path: 'error',
+        element: <ErrorPage />,
       },
       {
         path: 'login',

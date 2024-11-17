@@ -38,3 +38,10 @@ export function toCoordinateString(lat: number, lng: number) {
 export function toMapString(lat: number, lng: number) {
   return `https://www.google.com/maps/place/@${lat},${lng},19z`;
 }
+
+export function getCurrentMonthYear() {
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return `Tháng ${month} - ${year}`;
+}

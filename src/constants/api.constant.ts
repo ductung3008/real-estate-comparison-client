@@ -23,4 +23,10 @@ export const ApiConstant = {
     update: '/places/:id',
     delete: '/places/:id',
   },
+  statistics: {
+    price: '/stats/prices',
+    parking: '/stats/parking',
+    district: '/stats/districts',
+    area: '/stats/areas',
+  },
 };
