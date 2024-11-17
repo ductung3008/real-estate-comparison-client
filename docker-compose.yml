@@ -1,0 +1,12 @@
+services:
+  real-estate-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+        - VITE_UPLOAD_API_BASE_URL=${VITE_UPLOAD_API_BASE_URL}
+    ports:
+      - '5173:80'
+    env_file:
+      - .env
