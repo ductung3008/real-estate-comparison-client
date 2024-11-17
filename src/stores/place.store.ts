@@ -37,15 +37,14 @@ const usePlaceStore = create<PlaceState>((set) => ({
   createPlace: async (placeData) => {
     set({ loading: true });
     try {
-      const { project_id: projectId, ...data } = placeData;
+      const { projectId, ...data } = placeData;
       const { data: response } = await axios.post<ApiResponse<Place>>(
         ApiConstant.places.create.replace(':projectId', projectId),
         data,
       );
-      console.log({ ...response.data, project_id: projectId });
 
       set((state) => ({
-        places: [...state.places, { ...response.data, project_id: projectId }],
+        places: [...state.places, { ...response.data, projectId }],
         loading: false,
         error: null,
       }));

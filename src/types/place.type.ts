@@ -6,9 +6,9 @@ export interface Place {
   distance: number;
   rating: number;
   category: PlaceCategories;
-  project_id?: string;
-  created_at?: string;
-  updated_at?: string;
+  projectId?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export enum PlaceCategories {
