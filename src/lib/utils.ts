@@ -19,6 +19,10 @@ export function rounded(value: number, precision = 2) {
   return Math.round(value * 10 ** precision) / 10 ** precision;
 }
 
+export function toBillions(value: number) {
+  return `${rounded(value / 1000000000)}`;
+}
+
 export function toRangeString(min: number, max: number) {
   min = rounded(min);
   max = rounded(max);

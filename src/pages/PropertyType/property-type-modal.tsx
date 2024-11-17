@@ -7,37 +7,36 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import { DropdownSelectField } from '@/components/ui/DropdownSelectField';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import usePlaceStore from '@/stores/place.store';
 import useProjectStore from '@/stores/project.store';
-import { Place, place_categories, PlaceCategories } from '@/types/place.type';
+import usePropertyTypeStore from '@/stores/property-type.store';
+import { PropertyType } from '@/types/property-type.type';
 
-interface PlaceModalProps {
+interface PropertyTypeModalProps {
   modalProps?: {
     mode: 'read' | 'create' | 'edit';
     onSubmit: (data: z.infer<typeof FormSchema>) => void;
   };
-  place?: Place;
+  propertyType?: PropertyType;
 }
 
 export const FormSchema = z.object({
   projectId: z.string({ required_error: 'Dự án không được để trống' }).optional(),
-  name: z.string({ required_error: 'Tên địa điểm không được để trống' }),
-  latitude: z.coerce.number({ required_error: 'Vĩ độ không được để trống' }),
-  longitude: z.coerce.number({ required_error: 'Kinh độ không được để trống' }),
-  distance: z.coerce.number({ required_error: 'Khoảng cách không được để trống' }),
-  rating: z.coerce.number({ required_error: 'Đánh giá không được để trống' }),
-  category: z.nativeEnum(PlaceCategories, { required_error: 'Loại địa điểm không được để trống' }),
+  numberOfBedroom: z.coerce.number({ required_error: 'Số phòng ngủ không được để trống' }).int(),
+  minArea: z.coerce.number({ required_error: 'Diện tích tối thiểu không được để trống' }).int(),
+  maxArea: z.coerce.number({ required_error: 'Diện tích tối đa không được để trống' }).int(),
+  minPrice: z.coerce.number({ required_error: 'Giá tối thiểu không được để trống' }).int(),
+  maxPrice: z.coerce.number({ required_error: 'Giá tối đa không được để trống' }).int(),
 });
 
-const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
-  const { createPlace } = usePlaceStore();
+const PropertyTypeModal = ({ modalProps, propertyType }: PropertyTypeModalProps) => {
   const { projects } = useProjectStore();
+  const { createPropertyType } = usePropertyTypeStore();
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
     onSubmit: async (data: z.infer<typeof FormSchema>) => {
       try {
-        await createPlace({ ...data });
+        await createPropertyType({ ...data });
       } catch (error) {
         console.error('Failed to create place', error);
       }
@@ -45,15 +44,15 @@ const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
   };
 
   const title = {
-    read: 'Thông tin địa điểm',
-    create: 'Tạo địa điểm mới',
-    edit: 'Sửa thông tin địa điểm',
+    read: 'Thông tin loại căn chung cư',
+    create: 'Tạo loại căn chung cư mới',
+    edit: 'Sửa thông tin loại căn chung cư',
   }[mode];
 
   const form = useForm<z.infer<typeof FormSchema>>({
     mode: 'onTouched',
     resolver: zodResolver(FormSchema),
-    defaultValues: mode === 'create' ? undefined : place,
+    defaultValues: mode === 'create' ? undefined : propertyType,
   });
 
   return (
@@ -61,7 +60,7 @@ const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
         {mode !== 'read' && (
-          <DialogDescription>Thay đổi thông tin địa điểm tại đây. Nhấn Lưu để cập nhật.</DialogDescription>
+          <DialogDescription>Thay đổi thông tin loại căn chung cư tại đây. Nhấn Lưu để cập nhật.</DialogDescription>
         )}
       </DialogHeader>
 
@@ -79,10 +78,10 @@ const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
             )}
             <FormField
               control={form.control}
-              name="name"
+              name="numberOfBedroom"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Tên địa điểm</FormLabel>
+                  <FormLabel>Loại căn chung cư (Số phòng ngủ)</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -90,19 +89,12 @@ const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
                 </FormItem>
               )}
             />
-            <DropdownSelectField
-              form={form}
-              name="category"
-              options={place_categories}
-              label="Loại địa điểm"
-              placeholder="Chọn loại địa điểm"
-            />
             <FormField
               control={form.control}
-              name="latitude"
+              name="minArea"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Vĩ độ</FormLabel>
+                  <FormLabel>Diện tích tối thiểu (m2)</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" />
                   </FormControl>
@@ -112,10 +104,10 @@ const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
             />
             <FormField
               control={form.control}
-              name="longitude"
+              name="maxArea"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Kinh độ</FormLabel>
+                  <FormLabel>Diện tích tối đa (m2)</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" />
                   </FormControl>
@@ -125,10 +117,10 @@ const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
             />
             <FormField
               control={form.control}
-              name="distance"
+              name="minPrice"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Khoảng cách (km)</FormLabel>
+                  <FormLabel>Giá tối thiểu (VNĐ)</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" />
                   </FormControl>
@@ -138,10 +130,10 @@ const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
             />
             <FormField
               control={form.control}
-              name="rating"
+              name="maxPrice"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Đánh giá</FormLabel>
+                  <FormLabel>Giá tối đa (VNĐ)</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" />
                   </FormControl>
@@ -163,4 +155,4 @@ const PlaceModal = ({ modalProps, place }: PlaceModalProps) => {
   );
 };
 
-export default PlaceModal;
+export default PropertyTypeModal;

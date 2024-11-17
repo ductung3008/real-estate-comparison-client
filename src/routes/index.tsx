@@ -9,6 +9,7 @@ import Places from '@/pages/Places';
 import Projects from '@/pages/Projects';
 import Users from '@/pages/Users';
 import ErrorPage from '@/pages/ErrorPage';
+import PropertyTypes from '@/pages/PropertyType';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem('token');
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
           {
             path: 'projects',
             element: <Projects />,
+          },
+          {
+            path: 'property-types',
+            element: <PropertyTypes />,
           },
           {
             path: 'places',

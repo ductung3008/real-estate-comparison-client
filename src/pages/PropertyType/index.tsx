@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react';
-
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import TablePage from '@/components/ui/TablePage/TablePage';
-import usePlaceStore from '@/stores/place.store';
 import useProjectStore from '@/stores/project.store';
-import { columns } from './columns';
-import PlaceModal from './place-modal';
+import usePropertyTypeStore from '@/stores/property-type.store';
+import { useEffect, useState } from 'react';
+import { columns } from './column';
+import PropertyTypesModal from './property-type-modal';
 
-const Places = () => {
+const PropertyTypes = () => {
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const { fetchProjects, projects } = useProjectStore();
-  const { fetchPlaces, places, loading } = usePlaceStore();
+  const { fetchPropertyTypes, propertyTypes, loading } = usePropertyTypeStore();
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -29,21 +28,27 @@ const Places = () => {
     const loadPlaces = async () => {
       if (!selectedProject) return;
       try {
-        await fetchPlaces(selectedProject);
+        await fetchPropertyTypes(selectedProject);
       } catch (error) {
         console.error(error);
       }
     };
 
     loadPlaces();
-  }, [selectedProject, fetchPlaces]);
+  }, [selectedProject, fetchPropertyTypes]);
 
   const handleProjectChange = (projectId: string) => {
     setSelectedProject(projectId);
   };
 
   return (
-    <TablePage title="Quản lý địa điểm" data={places} columns={columns} Modal={PlaceModal} loading={loading}>
+    <TablePage
+      title="Quản lý loại căn chung cư"
+      data={propertyTypes}
+      columns={columns}
+      Modal={PropertyTypesModal}
+      loading={loading}
+    >
       <div className="m-2 ml-0 flex items-center gap-2">
         <Label className="text-lg">Dự án: </Label>
         <Select onValueChange={handleProjectChange} value={selectedProject || undefined}>
@@ -63,4 +68,4 @@ const Places = () => {
   );
 };
 
-export default Places;
+export default PropertyTypes;

@@ -39,6 +39,7 @@ import {
 } from '@/components/ui/sidebar';
 import useAuthStore from '@/stores/auth.store';
 import {
+  Building,
   Building2,
   ChevronRight,
   ChevronsUpDown,
@@ -61,6 +62,7 @@ const items = [
     isActive: true,
     items: [
       { title: 'Dự án BĐS', icon: Building2, href: '/dashboard/projects', tooltip: 'Dự án bất động sản' },
+      { title: 'Loại căn chung cư', icon: Building, href: '/dashboard/property-types', tooltip: 'Loại căn hộ' },
       { title: 'Địa điểm', icon: MapPin, href: '/dashboard/places', tooltip: 'Địa điểm xung quanh' },
       { title: 'Người dùng', icon: User, href: '/dashboard/users', tooltip: 'Người dùng' },
     ],
