@@ -33,16 +33,18 @@ const Dashboard = () => {
   } satisfies ChartConfig;
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        await fetchProjects();
-      } catch (error) {
-        console.error(error);
+    const loadProjects = async () => {
+      if (!projects.length) {
+        try {
+          await fetchProjects();
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
 
-    loadData();
-  }, [fetchProjects]);
+    loadProjects();
+  }, [projects, fetchProjects, loading, loading2]);
 
   const totalProjects = data.price.reduce((acc: number, item: any) => acc + item.count, 0);
 
@@ -54,8 +56,8 @@ const Dashboard = () => {
     projects.reduce((acc: number, item: Project) => acc + (item?.maxUnitPrice ?? 0), 0) / projects.length / 1000000,
   );
 
-  if (loading && loading2) {
-    <LoadingScreen />;
+  if (loading || loading2) {
+    return <LoadingScreen />;
   }
 
   if (error) {

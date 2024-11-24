@@ -14,15 +14,17 @@ const PropertyTypes = () => {
 
   useEffect(() => {
     const loadProjects = async () => {
-      try {
-        await fetchProjects();
-      } catch (error) {
-        console.error(error);
+      if (!projects.length) {
+        try {
+          await fetchProjects();
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
 
     loadProjects();
-  }, [fetchProjects]);
+  }, [projects, fetchProjects]);
 
   useEffect(() => {
     const loadPlaces = async () => {

@@ -11,15 +11,17 @@ const Projects = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      try {
-        await fetchProjects();
-      } catch (error) {
-        console.error(error);
+      if (!projects.length) {
+        try {
+          await fetchProjects();
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
 
     loadData();
-  }, [fetchProjects]);
+  }, [projects, fetchProjects]);
 
   return (
     <TablePage<Project>

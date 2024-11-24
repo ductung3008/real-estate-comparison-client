@@ -1,45 +1,10 @@
 const LoadingScreen = () => {
   return (
-    <div className="flex items-center justify-center">
-      <svg
-        className="h-8 w-8 animate-spin text-gray-900 dark:text-gray-50"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M12 4.75V6.25" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path
-          d="M17.1475 6.8525L16.0625 7.9375"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path d="M19.25 12H17.75" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path
-          d="M17.1475 17.1475L16.0625 16.0625"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path d="M12 17.75V19.25" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path
-          d="M6.8525 17.1475L7.9375 16.0625"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path d="M4.75 12H6.25" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        <path
-          d="M6.8525 6.8525L7.9375 7.9375"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+    <div className="flex h-screen w-full items-center justify-center">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-gray-900" />
+        <p className="text-gray-500 dark:text-gray-400">Đang tải...</p>
+      </div>
     </div>
   );
 };

@@ -19,6 +19,7 @@ export const useStatistic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const [price, parking, district, area] = await Promise.all([
           getPriceStatistic(),
           getParkingStatistic(),
