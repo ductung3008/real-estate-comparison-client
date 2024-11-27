@@ -36,4 +36,7 @@ export const ApiConstant = {
     district: '/stats/districts',
     area: '/stats/areas',
   },
+  prices: {
+    list: '/projects/:projectId/prices',
+  },
 };

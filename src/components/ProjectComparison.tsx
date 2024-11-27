@@ -1,11 +1,11 @@
-import { Project } from '@/types/project.type';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { rounded, toMillionPriceRange, toNumberWithCommas, toPriceRange, toRangeString } from '@/lib/utils';
 import { PlaceCategories } from '@/types/place.type';
+import { Project } from '@/types/project.type';
 
 const ProjectComparison = ({ projects }: { projects: Project[] }) => {
   return (
-    <div className="m-auto mb-20 mt-10 flex w-full max-w-[1400px] flex-col">
+    <div className="m-auto my-10 flex w-full max-w-[1400px] flex-col">
       <div>
         <h2 className="mb-4 w-full text-left text-4xl font-semibold">So sánh thông tin dự án</h2>
         <div className="w-full overflow-hidden rounded-xl bg-white shadow-2xl">
@@ -205,14 +205,19 @@ const ProjectComparison = ({ projects }: { projects: Project[] }) => {
                   const schools = project?.places?.filter((place) => place?.category === PlaceCategories.SCHOOL);
                   return (
                     <TableCell key={index} className="align-top">
-                      <span className="text-om-t14 mb-1 inline font-medium">{schools?.length || 0} Trường học</span>
-                      <ul className="list-inside list-disc pl-4">
-                        {schools?.map((place) => (
-                          <li key={place.id} className="font-medium">
-                            {place.name}
-                          </li>
-                        ))}
-                      </ul>
+                      <span className="text-om-t14 mb-1 inline font-medium">
+                        {(schools?.length || 0) !== 0 ? `${schools?.length} Trường học` : '- -'}
+                      </span>
+                      {schools?.length > 0 && (
+                        <ul className="list-inside list-disc pl-4">
+                          {schools?.slice(0, 10).map((place) => (
+                            <li key={place.id} className="font-medium">
+                              {place.name}
+                            </li>
+                          ))}
+                          <li>...</li>
+                        </ul>
+                      )}
                     </TableCell>
                   );
                 })}
@@ -223,16 +228,19 @@ const ProjectComparison = ({ projects }: { projects: Project[] }) => {
                   const hospitals = project?.places?.filter((place) => place?.category === PlaceCategories.HOSPITAL);
                   return (
                     <TableCell key={index} className="align-top">
-                      <span className="text-om-t14 mb-1 inline font-medium">
-                        {hospitals?.length || 0} Bệnh viện/Phòng khám
+                      <span className="mb-1 inline font-medium">
+                        {(hospitals?.length || 0) !== 0 ? `${hospitals?.length} Bệnh viện/Phòng khám` : '- -'}
                       </span>
-                      <ul className="list-inside list-disc pl-4">
-                        {hospitals?.map((place) => (
-                          <li key={place.id} className="font-medium">
-                            {place.name}
-                          </li>
-                        ))}
-                      </ul>
+                      {hospitals?.length > 0 && (
+                        <ul className="list-inside list-disc pl-4">
+                          {hospitals?.slice(0, 10).map((place) => (
+                            <li key={place.id} className="font-medium">
+                              {place.name}
+                            </li>
+                          ))}
+                          <li>...</li>
+                        </ul>
+                      )}
                     </TableCell>
                   );
                 })}
@@ -246,14 +254,19 @@ const ProjectComparison = ({ projects }: { projects: Project[] }) => {
                   );
                   return (
                     <TableCell key={index} className="align-top">
-                      <span className="text-om-t14 mb-1 inline font-medium">{others?.length || 0} tiện ích khác</span>
-                      <ul className="list-inside list-disc pl-4">
-                        {others?.map((place) => (
-                          <li key={place.id} className="font-medium">
-                            {place.name}
-                          </li>
-                        ))}
-                      </ul>
+                      <span className="text-om-t14 mb-1 inline font-medium">
+                        {(others?.length || 0) !== 0 ? `${others?.length} tiện ích khác` : '- -'}
+                      </span>
+                      {others?.length > 0 && (
+                        <ul className="list-inside list-disc pl-4">
+                          {others?.slice(0, 10).map((place) => (
+                            <li key={place.id} className="font-medium">
+                              {place.name}
+                            </li>
+                          ))}
+                          <li>...</li>
+                        </ul>
+                      )}
                     </TableCell>
                   );
                 })}

@@ -21,6 +21,8 @@ import { Input } from '@/components/ui/input';
 import LoadingScreen from '@/components/LoadingScreen';
 import ProjectComparison from '@/components/ProjectComparison';
 import { getPlacesOfProject } from '@/services/place.service';
+import ProjectPriceComparison from '@/components/ProjectPriceComparison';
+import { getPricesOfProject } from '@/services/price.service';
 
 const Homepage = () => {
   const { projects, fetchProjects, loading } = useProjectStore();
@@ -50,13 +52,16 @@ const Homepage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const projectsToFetch = selectedProjects.filter((project) => project && !project.properties && !project.places);
+      const projectsToFetch = selectedProjects.filter(
+        (project) => project && !project.properties && !project.places && !project.prices,
+      );
 
       for (const project of projectsToFetch) {
         const propertyTypes = await getPropertyTypesOfProject(project.id);
         const places = await getPlacesOfProject(project.id);
+        const prices = await getPricesOfProject(project.id);
         setSelectedProjects((prev) =>
-          prev.map((p) => (p?.id === project.id ? { ...project, properties: propertyTypes, places } : p)),
+          prev.map((p) => (p?.id === project.id ? { ...project, properties: propertyTypes, places, prices } : p)),
         );
       }
     };
@@ -196,13 +201,12 @@ const Homepage = () => {
                           <DialogTrigger asChild>
                             <Button
                               onClick={() => setIsModalOpen(true)}
-                              className="flex size-full cursor-pointer flex-col items-center justify-center gap-1 rounded-sm border border-dashed border-[#094bf4] bg-white text-[#094bf4] hover:border-solid hover:bg-white"
+                              className="flex size-full cursor-pointer flex-col items-center justify-center gap-1 rounded-sm border border-dashed border-[#094bf4] bg-white text-xl text-[#094bf4] hover:border-solid hover:bg-white"
                             >
                               <CirclePlus />
                               <div>Thêm dự án</div>
                             </Button>
                           </DialogTrigger>
-
                           <DialogContent className="no-scrollbar max-h-[400px] max-w-[800px] overflow-y-auto p-0">
                             <DialogHeader className="p-6 pb-2">
                               <DialogTitle className="mb-2">Chọn dự án</DialogTitle>
@@ -229,7 +233,7 @@ const Homepage = () => {
                                   <div className="flex cursor-pointer items-center px-5 py-3 hover:bg-[#f4f4f4]">
                                     <Building />
                                     <div className="ml-3 font-medium text-black">
-                                      <span>{project?.name}</span>|
+                                      <span>{project?.name}</span>
                                       <span className="ml-4 text-sm text-gray-500">{project?.address}</span>
                                     </div>
                                   </div>
@@ -258,17 +262,13 @@ const Homepage = () => {
                     </Button>
                   );
                 })}
-                <Button
-                  className={`rounded-full border border-[#094bf4] bg-[#094bf4] text-base font-semibold text-white hover:bg-[#0635ad] ${selectedProjects[2] != null ? 'cursor-not-allowed border-gray-300 bg-[#f4f4f4] text-[#9f9faa] hover:bg-[#f4f4f4]' : 'cursor-pointer'} `}
-                >
-                  Thêm dự án <Plus />
-                </Button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <ProjectComparison projects={selectedProjects} />
+      <ProjectPriceComparison projects={selectedProjects} />
     </main>
   );
 };

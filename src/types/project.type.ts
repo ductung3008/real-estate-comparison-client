@@ -1,4 +1,5 @@
 import { Place } from './place.type';
+import { Price } from './price.type';
 import { PropertyType } from './property-type.type';
 
 export interface Project {
@@ -34,4 +35,5 @@ export interface Project {
   updateAt?: string;
   properties?: PropertyType[];
   places?: Place[];
+  prices?: Price[];
 }
