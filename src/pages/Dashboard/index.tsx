@@ -68,12 +68,12 @@ const Dashboard = () => {
     <div className="flex h-full flex-col">
       <h1 className="mb-4 text-2xl font-bold tracking-tight">Tổng quan</h1>
       <div className="flex grow flex-col gap-4">
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-4 gap-6 *:shadow-md">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
-                <div className="rounded-full bg-blue-100 p-2">
-                  <Building className="h-6 w-6 text-blue-600" />
+                <div className="rounded-full bg-orange-100 p-2">
+                  <Building className="h-6 w-6 text-orange-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Số lượng dự án BĐS</p>
@@ -100,8 +100,8 @@ const Dashboard = () => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
-                <div className="rounded-full bg-blue-100 p-2">
-                  <BadgeDollarSign className="h-6 w-6 text-blue-600" />
+                <div className="rounded-full bg-green-100 p-2">
+                  <BadgeDollarSign className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Giá trung bình (tỷ VNĐ)</p>
@@ -114,8 +114,8 @@ const Dashboard = () => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
-                <div className="rounded-full bg-blue-100 p-2">
-                  <CircleDollarSign className="h-6 w-6 text-blue-600" />
+                <div className="rounded-full bg-green-100 p-2">
+                  <CircleDollarSign className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Giá trung bình/m2 (triệu VNĐ)</p>

@@ -2,14 +2,15 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import AuthGuard from '@/components/AuthGuard';
 import DashboardLayout from '@/layouts/DashboardLayout';
+import HomepageLayout from '@/layouts/HomapageLayout';
 import Dashboard from '@/pages/Dashboard';
+import ErrorPage from '@/pages/ErrorPage';
 import Homepage from '@/pages/Homepage';
 import Login from '@/pages/Login';
 import Places from '@/pages/Places';
 import Projects from '@/pages/Projects';
-import Users from '@/pages/Users';
-import ErrorPage from '@/pages/ErrorPage';
 import PropertyTypes from '@/pages/PropertyType';
+import Users from '@/pages/Users';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem('token');
@@ -24,8 +25,13 @@ const router = createBrowserRouter([
     path: '/',
     children: [
       {
-        index: true,
-        element: <Homepage />,
+        element: <HomepageLayout />,
+        children: [
+          {
+            index: true,
+            element: <Homepage />,
+          },
+        ],
       },
       {
         path: 'error',

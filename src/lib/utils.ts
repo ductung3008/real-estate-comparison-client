@@ -35,6 +35,16 @@ export function toPriceRange(min: number, max: number) {
   return min === max ? `${min}` : `${min} - ${max}`;
 }
 
+export function toMillionPriceRange(min: number, max: number) {
+  min = rounded(min / 1000000);
+  max = rounded(max / 1000000);
+  return min === max ? `${min}` : `${min} - ${max}`;
+}
+
+export function toNumberWithCommas(value: number) {
+  return Intl.NumberFormat('en-US').format(value);
+}
+
 export function toCoordinateString(lat: number, lng: number) {
   return `${rounded(lat, 6)}, ${rounded(lng, 6)}`;
 }

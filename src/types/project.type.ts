@@ -1,3 +1,6 @@
+import { Place } from './place.type';
+import { PropertyType } from './property-type.type';
+
 export interface Project {
   id: string;
   code: string;
@@ -29,4 +32,6 @@ export interface Project {
   createdBy?: string;
   createdAt?: string;
   updateAt?: string;
+  properties?: PropertyType[];
+  places?: Place[];
 }
