@@ -23,6 +23,7 @@ import ProjectComparison from '@/components/ProjectComparison';
 import { getPlacesOfProject } from '@/services/place.service';
 import ProjectPriceComparison from '@/components/ProjectPriceComparison';
 import { getPricesOfProject } from '@/services/price.service';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const Homepage = () => {
   const { projects, fetchProjects, loading } = useProjectStore();
@@ -30,6 +31,7 @@ const Homepage = () => {
   const [visibleProjects, setVisibleProjects] = useState<Project[]>(projects);
   const [searchValue, setSearchValue] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [showDiff, setShowDiff] = useState<boolean>(false);
   // const [selectedPropertyTypes, setSelectedPropertyTypes] = useState<PropertyType[]>([]);
 
   useEffect(() => {
@@ -154,8 +156,17 @@ const Homepage = () => {
             </div>
             <div className="flex max-w-full flex-1 flex-col">
               <div>
-                <span className="block px-5 py-4 text-xl font-semibold text-black">
-                  Chọn các dự án bất động sản cần so sánh
+                <span className="flex justify-between px-5 py-4 text-xl font-semibold text-black">
+                  <p>Chọn các dự án bất động sản cần so sánh</p>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox id="diff" checked={showDiff} onCheckedChange={() => setShowDiff(!showDiff)} />
+                    <label
+                      htmlFor="diff"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Hiển thị sự khác biệt
+                    </label>
+                  </div>
                 </span>
                 <div className="flex divide-x divide-dashed border-b border-t *:min-h-44 *:w-1/3">
                   {selectedProjects.map((project, index) =>
@@ -254,7 +265,13 @@ const Homepage = () => {
                   return (
                     <Button
                       key={project.id}
-                      onClick={() => handleAddProject(project)}
+                      onClick={() => {
+                        if (selectedProjects.find((p) => p?.id === project.id)) {
+                          handleDeleteProject(project.id);
+                          return;
+                        }
+                        handleAddProject(project);
+                      }}
                       className={`rounded-full border text-base font-semibold ${addClasses}`}
                     >
                       {project.name}
@@ -267,7 +284,7 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-      <ProjectComparison projects={selectedProjects} />
+      <ProjectComparison projects={selectedProjects} showDiff={showDiff} />
       <ProjectPriceComparison projects={selectedProjects} />
     </main>
   );

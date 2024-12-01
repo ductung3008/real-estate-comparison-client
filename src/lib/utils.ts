@@ -59,3 +59,30 @@ export function getCurrentMonthYear() {
   const year = date.getFullYear();
   return `Tháng ${month} - ${year}`;
 }
+
+export function getAverage(values: number[]) {
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+export function compareNumerical(values: (number | null)[], order: 'asc' | 'desc' | 'none' = 'none') {
+  if (order === 'none') return Array(values.length).fill(null);
+
+  const ranked = [...values]
+    .map((value, index) => ({ index, value }))
+    .sort((a, b) => {
+      if (a.value === null) return 1;
+      if (b.value === null) return -1;
+      return order === 'asc' ? a.value - b.value : b.value - a.value;
+    });
+
+  const ranks = Array(values.length).fill(null);
+  let currentRank = 0;
+  ranked.forEach((item, i) => {
+    if (i === 0 || item.value !== ranked[i - 1].value) {
+      currentRank = i + 1;
+    }
+    ranks[item.index] = currentRank;
+  });
+
+  return ranks;
+}
