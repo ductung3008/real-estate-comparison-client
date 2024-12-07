@@ -1,5 +1,6 @@
 services:
   real-estate-client:
+    container_name: real-estate-client
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,3 +11,9 @@ services:
       - '5173:80'
     env_file:
       - .env
+    networks:
+      - real-estate-network
+
+networks:
+  real-estate-network:
+    external: true
