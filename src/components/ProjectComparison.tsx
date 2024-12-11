@@ -37,7 +37,7 @@ const renderRow = (label, projects, accessorKey, accessorFn, showDiff, compariso
 
   return (
     <TableRow key={label}>
-      <TableCell>{label}</TableCell>
+      <TableCell className="min-w-[300px]">{label}</TableCell>
       {values.map((value, index) => {
         return (
           <TableCell key={index} className={`relative ${getBackgroundColor(value, ranks[index], showDiff)}`}>
@@ -58,7 +58,16 @@ const renderSection = (title, rows, projects, showDiff = false) => (
   </>
 );
 
-const ProjectComparison = ({ projects, showDiff }: { projects: Project[]; showDiff: boolean }) => {
+const ProjectComparison = ({
+  projects,
+  showDiff,
+  isMobile,
+}: {
+  projects: Project[];
+  showDiff: boolean;
+  isMobile: boolean;
+}) => {
+  projects = projects.slice(0, isMobile ? 2 : 3);
   const rows = {
     price: [
       {
@@ -149,7 +158,7 @@ const ProjectComparison = ({ projects, showDiff }: { projects: Project[]; showDi
   };
 
   return (
-    <div className="m-auto my-10 flex w-full max-w-[1400px] flex-col">
+    <div className="m-auto my-10 flex w-full max-w-[1400px] flex-col px-10 2xl:px-0">
       <div>
         <h2 className="mb-4 w-full text-left text-4xl font-semibold">So sánh thông tin dự án</h2>
         <div className="w-full overflow-hidden rounded-xl bg-white shadow-2xl">

@@ -1,11 +1,13 @@
-import useProjectStore from '@/stores/project.store';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import HomepageBackground from '@/assets/images/homepage-bg.webp';
 import PickImage from '@/assets/images/pick-image.jpg';
+import useProjectStore from '@/stores/project.store';
 import { Building, Check, CirclePlus, Plus, X } from 'lucide-react';
 // import { Label } from '@/components/ui/label';
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Project } from '@/types/project.type';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -14,16 +16,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { getPropertyTypesOfProject } from '@/services/property-type.service';
+import { Project } from '@/types/project.type';
 // import { PropertyType } from '@/types/property-type.type';
-import { Input } from '@/components/ui/input';
 import LoadingScreen from '@/components/LoadingScreen';
 import ProjectComparison from '@/components/ProjectComparison';
-import { getPlacesOfProject } from '@/services/place.service';
 import ProjectPriceComparison from '@/components/ProjectPriceComparison';
-import { getPricesOfProject } from '@/services/price.service';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { getPlacesOfProject } from '@/services/place.service';
+import { getPricesOfProject } from '@/services/price.service';
 
 const Homepage = () => {
   const { projects, fetchProjects, loading } = useProjectStore();
@@ -32,11 +34,27 @@ const Homepage = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [showDiff, setShowDiff] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   // const [selectedPropertyTypes, setSelectedPropertyTypes] = useState<PropertyType[]>([]);
 
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+    if (!projects.length) {
+      fetchProjects();
+    }
+  }, [fetchProjects, projects]);
 
   useEffect(() => {
     if (searchValue) {
@@ -132,7 +150,7 @@ const Homepage = () => {
         <div className="absolute left-0 top-0 -z-10 h-full w-full">
           <img src={HomepageBackground} alt="Homepage background" className="w-full" />
         </div>
-        <div className="w-full pt-7 *:m-auto *:max-w-[1400px]">
+        <div className="w-full px-10 pt-7 *:m-auto *:max-w-[1400px] 2xl:px-0">
           <div>
             <h1 className="text-5xl font-medium leading-[64px]">So sánh dự án bất động sản</h1>
             <div className="mb-5 mt-2 flex gap-5 *:pr-4 [&>:not(:last-child)]:border-r">
@@ -151,7 +169,7 @@ const Homepage = () => {
             </div>
           </div>
           <div className="mt-28 flex min-h-[180px] overflow-hidden rounded-xl bg-white shadow-2xl">
-            <div className="aspect-square h-[400px]">
+            <div className="max-w-[400px]">
               <img src={PickImage} alt="hp-image" loading="lazy" className="h-full w-full object-cover" />
             </div>
             <div className="flex max-w-full flex-1 flex-col">
@@ -168,18 +186,19 @@ const Homepage = () => {
                     </label>
                   </div>
                 </span>
-                <div className="flex divide-x divide-dashed border-b border-t *:min-h-44 *:w-1/3">
-                  {selectedProjects.map((project, index) =>
+                <div className="flex divide-x divide-dashed border-b border-t *:min-h-44 *:w-1/2 xl:*:w-1/3">
+                  {selectedProjects.slice(0, isMobile ? 2 : 3).map((project, index) =>
                     project ? (
                       <div key={project.id || index} className="flex flex-1 px-5 py-3">
                         <div className="w-full">
                           <div className="mb-3 flex min-h-[48px] items-start justify-between">
-                            <a
-                              href="#"
+                            <Link
+                              to={`/project/${encodeURIComponent(project.name)}`}
+                              state={{ id: project.id }}
                               className="line-clamp-2 h-14 cursor-pointer text-lg font-semibold text-[#094bf4] underline"
                             >
                               {project.name}
-                            </a>
+                            </Link>
                             <div className="cursor-pointer" onClick={() => handleDeleteProject(project.id)}>
                               <X className="size-6 text-gray-400" />
                             </div>
@@ -260,7 +279,7 @@ const Homepage = () => {
                 <div></div>
               </div>
               <div className="flex flex-1 flex-wrap gap-2 px-5 py-3">
-                {projects?.slice(0, 10).map((project) => {
+                {projects?.slice(0, isMobile ? 5 : 10).map((project) => {
                   const addClasses = `${selectedProjects.find((p) => p?.id === project.id) ? 'border-[#094bf4] bg-[#eff3ff] text-[#094bf4] hover:bg-[#d7e2ff]' : 'border-gray-300 bg-white text-black hover:bg-[#f4f4f4]'} ${selectedProjects[2] != null && (!selectedProjects.find((p) => p?.id === project.id) ? 'cursor-not-allowed bg-[#f4f4f4] text-[#9f9faa]' : 'cursor-pointer')}`;
                   return (
                     <Button
@@ -284,8 +303,10 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-      <ProjectComparison projects={selectedProjects} showDiff={showDiff} />
-      <ProjectPriceComparison projects={selectedProjects} />
+      <ProjectComparison projects={selectedProjects} showDiff={showDiff} isMobile={isMobile} />
+      <ProjectPriceComparison projects={selectedProjects}>
+        <h2 className="mb-8 w-full text-left text-4xl font-semibold">So sánh giá bất động sản</h2>
+      </ProjectPriceComparison>
     </main>
   );
 };
